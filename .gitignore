@@ -1,0 +1,6 @@
+
+*.txt
+/cmake-build-debug/CMakeFiles
+/cmake-build-debug/.cmake/api/v1/reply
+/cmake-build-debug/.cmake/api/v1/query
+/.idea
