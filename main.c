@@ -13,6 +13,12 @@ struct Circle {
   double radius;
 };
 
+struct Ray {
+  double x_start,y_start;
+  double x_end,y_end;
+  double angle; 
+};
+
 void FillCircle(SDL_Surface* surface, struct Circle circle, Uint32 color) {
   double radius_squared = pow(circle.radius,2);
   for (double x=circle.x-circle.radius; x<=circle.x+circle.radius;x++) {
@@ -27,6 +33,8 @@ void FillCircle(SDL_Surface* surface, struct Circle circle, Uint32 color) {
   }
 }
 
+void rays(struct Circle c,)
+
 int main(){
 
   SDL_Init(SDL_INIT_VIDEO);
@@ -39,6 +47,7 @@ int main(){
 
 
   struct Circle circle = {200,200,80};
+  struct Circle shadow_circle = {650,300,140};
   SDL_Rect erase_rect = {0,0,WIDTH,HEIGHT};
 
   int simulation_running = 1;
@@ -52,7 +61,8 @@ int main(){
         circle.y = event.motion.y;
     }
     SDL_FillRect(surface,&erase_rect,COLOR_BLACK);
-    FillCircle(surface,circle,COLOR_WHITE); 
+    FillCircle(surface,circle,COLOR_WHITE);
+    FillCircle(surface,shadow_circle,COLOR_WHITE);
 
     SDL_UpdateWindowSurface(window);
 
