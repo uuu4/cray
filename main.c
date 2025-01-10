@@ -38,6 +38,7 @@ void generate_rays(struct Circle circle,struct Ray rays[RAYS_NUMBER]) {
 
   for (int i=0;i<RAYS_NUMBER;i++) {
     double angle = 2*M_PI*i/RAYS_NUMBER;
+    printf("angle: %f\n",angle);
   }
 }
 int main(){
@@ -54,6 +55,9 @@ int main(){
   struct Circle circle = {200,200,80};
   struct Circle shadow_circle = {650,300,140};
   SDL_Rect erase_rect = {0,0,WIDTH,HEIGHT};
+
+  struct Ray rays[RAYS_NUMBER];
+  generate_rays(circle,rays);
 
   int simulation_running = 1;
   SDL_Event event;
