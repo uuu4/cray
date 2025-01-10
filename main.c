@@ -38,16 +38,19 @@ int main(){
 
   struct Circle circle = {200,200,80};
   int simulation_running = 1;
-  SDL_Event quit;
-  while (simulation_running) {
-    while (SDL_PollEvent(&quit)) {
-      if (quit.type == SDL_QUIT) {
+  SDL_Event event;
+  while (simulation_running && SDL_PollEvent(&event)) {
+      if (event.type == SDL_QUIT) {
         simulation_running = 0;
       }
+      if (event.type == SDL_MOUSEMOTION && event.motion.state !=0) {
+        circle.x = event.motion.x;
+        circle.y = event.motion.y;
     }
-    FillCircle(surface,circle,COLOR_WHITE);
+    FillCircle(surface,circle,COLOR_WHITE); 
 
     SDL_UpdateWindowSurface(window);
+
     SDL_Delay(10);
   }
 
