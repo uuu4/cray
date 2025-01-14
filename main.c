@@ -77,6 +77,7 @@ void generate_rays(struct Circle circle,struct Ray rays[RAYS_NUMBER]) {
     printf("angle: %f\n",angle);
   }
 }
+
 int main(){
 
   SDL_Init(SDL_INIT_VIDEO);
@@ -95,6 +96,7 @@ int main(){
   struct Ray rays[RAYS_NUMBER];
   generate_rays(circle,rays);
 
+  double obstacle_speed_y = 1;
   int simulation_running = 1;
   SDL_Event event;
   while (simulation_running && SDL_PollEvent(&event)) {
@@ -112,6 +114,11 @@ int main(){
     FillCircle(surface,shadow_circle,COLOR_WHITE);
     FillRays(surface,rays,COLOR_GRAY,shadow_circle);
 
+
+    shadow_circle.y += obstacle_speed_y;
+    if (shadow_circle.y+shadow_circle.radius<0 || shadow_circle.y+shadow_circle.radius>HEIGHT) {
+      obstacle_speed_y *= -1;
+    }
     SDL_UpdateWindowSurface(window);
 
     SDL_Delay(10);
