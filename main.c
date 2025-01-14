@@ -7,6 +7,7 @@
 #define COLOR_WHITE 0xFFFFFFFF
 #define COLOR_BLACK 0x00000000
 #define RAYS_NUMBER 100
+#define COLOR_GRAY 0x80808080
 
 struct Circle {
   double x;
@@ -16,7 +17,6 @@ struct Circle {
 
 struct Ray {
   double x_start,y_start;
-  double x_end,y_end;
   double angle;
 };
 
@@ -34,10 +34,46 @@ void FillCircle(SDL_Surface* surface, struct Circle circle, Uint32 color) {
   }
 }
 
+//OBJECT çoğaltılabilir
+void FillRays(SDL_Surface* surface, struct Ray rays[RAYS_NUMBER],Uint32 color,struct Circle object) {
+
+  double radius_squared = pow(object.radius,2);
+  for (int i=0;i<RAYS_NUMBER;i++) {
+    struct Ray ray = rays[i];
+
+    int end_of_screen = 0;
+    int object_hit = 0;
+
+    double step=1;
+    double x_draw = ray.x_start;
+    double y_draw = ray.y_start;
+    while (!end_of_screen && !object_hit) {
+       x_draw += step*cos(ray.angle);
+       y_draw += step*sin(ray.angle);
+
+      SDL_RECT pixel = (SDL_Rect){x_draw,y_draw,1,1};
+      SDL_FillRect(surface, &pixel, color);
+
+      if (x_draw<0 || x_draw>WIDTH || y_draw<0 || y_draw>HEIGHT) {
+        end_of_screen = 1;
+
+        // if the ray hit an object
+        double distance_squared = pow(x_draw-object.x,2) + pow(y_draw-object.y,2);
+        if (distance_squared < radius_squared) {
+          break;
+        }
+      }
+    }
+  }
+}
+
 void generate_rays(struct Circle circle,struct Ray rays[RAYS_NUMBER]) {
 
   for (int i=0;i<RAYS_NUMBER;i++) {
     double angle = 2*M_PI*i/RAYS_NUMBER;
+    struct Ray ray = {circle.x,circle.y,
+      angle};
+    rays[i] = ray;
     printf("angle: %f\n",angle);
   }
 }
@@ -68,10 +104,13 @@ int main(){
       if (event.type == SDL_MOUSEMOTION && event.motion.state !=0) {
         circle.x = event.motion.x;
         circle.y = event.motion.y;
+        generate_rays(circle,rays);
     }
     SDL_FillRect(surface,&erase_rect,COLOR_BLACK);
     FillCircle(surface,circle,COLOR_WHITE);
+
     FillCircle(surface,shadow_circle,COLOR_WHITE);
+    FillRays(surface,rays,COLOR_GRAY,shadow_circle);
 
     SDL_UpdateWindowSurface(window);
 
