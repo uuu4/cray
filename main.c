@@ -2,7 +2,7 @@
 #include <SDL2/SDL.h>
 #include <math.h>
 
-#define WIDTH 1200
+#define WIDTH 1600
 #define HEIGHT 900
 #define COLOR_WHITE 0xFFFFFFFF
 #define COLOR_BLACK 0x00000000
@@ -22,7 +22,7 @@ struct Ray {
   double angle;
 };
 
-void FillCircle(SDL_Surface* surface, struct Circle circle, Uint32 color) {
+void FillCircle(SDL_Surface* surface, struct Circle circle,Uint32 color) {
   double radius_squared = pow(circle.radius,2);
   for (double x=circle.x-circle.radius; x<=circle.x+circle.radius;x++) {
 
@@ -37,7 +37,7 @@ void FillCircle(SDL_Surface* surface, struct Circle circle, Uint32 color) {
 }
 
 //OBJECT çoğaltılabilir
-void FillRays(SDL_Surface* surface, struct Ray rays[RAYS_NUMBER],Uint32 color,struct Circle object) {
+void FillRays(SDL_Surface* surface, struct Ray rays[RAYS_NUMBER],Uint32 color_ray,struct Circle object) {
 
   double radius_squared = pow(object.radius,2);
   for (int i=0;i<RAYS_NUMBER;i++) {
@@ -54,7 +54,7 @@ void FillRays(SDL_Surface* surface, struct Ray rays[RAYS_NUMBER],Uint32 color,st
        y_draw += step*sin(ray.angle);
 
       SDL_RECT ray_point = (SDL_Rect){x_draw,y_draw,RAY_THICKNESS,RAY_THICKNESS};
-      SDL_FillRect(surface, &ray_point, color);
+      SDL_FillRect(surface, &ray_point,color_ray);
 
       if (x_draw<0 || x_draw>WIDTH || y_draw<0 || y_draw>HEIGHT) {
         end_of_screen = 1;
