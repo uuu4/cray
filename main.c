@@ -36,7 +36,7 @@ void FillCircle(SDL_Surface* surface, struct Circle circle,Uint32 color) {
   }
 }
 
-//OBJECT çoğaltılabilir
+//OBJECT structure may be updated into a more complex structure
 void FillRays(SDL_Surface* surface, struct Ray rays[RAYS_NUMBER],Uint32 color_ray,struct Circle object) {
 
   double radius_squared = pow(object.radius,2);
